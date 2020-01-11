@@ -1,2 +1,3 @@
-# darknull
-darknull - A super simple static site generator using markdown2 and jinja2.
+# asha
+
+## Asha - A super simple static site generator using rangeen, markdown2 and jinja2.
