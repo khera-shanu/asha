@@ -1,0 +1,9 @@
+<html>
+<head>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  {% include "header.jinja" %}
+    {% block content %}{% endblock %}
+  {% include "footer.jinja" %}
+</body>
