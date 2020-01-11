@@ -79,7 +79,7 @@ My Awesome Site
 - check global config exists.
 - check index.md exists in pages.
 - check theme is set in global config. (let's say theme set is T)
-- check theme exits and other neccessary items in it.
-- compile posts and pages using global and theme configs.
+- check T exits and other neccessary items in it.
+- compile posts and pages using global and theme configs for T.
 - stop if error - report
 
