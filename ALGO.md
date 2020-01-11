@@ -22,14 +22,13 @@ My Awesome Site
 |                |      |_____.
 |                |            |____ how_to_create_a_static_site_using_asha.md
 |                |            |____ 10_awesome_productivity_hacks.md
+|                |            |____ ...
 |                |---- 2019
 |                |      |_____.
-|                |            |____ how_to_create_a_static_site_using_asha.md
-|                |            |____ 10_awesome_productivity_hacks.md
+|                |            |____ ...
 |                |---- 2020
 |                       |_____.
-|                             |____ how_to_create_a_static_site_using_asha.md
-|                             |____ 10_awesome_productivity_hacks.md
+|                             |____ ...
 |         
 |________ themes
 |         |______.
@@ -65,7 +64,7 @@ My Awesome Site
 |                       |_____.
 |                             |____ ...
 |         
-|________ _sites
+|________ _static_site
 ```
 ### command line tool:
  - `asha init` - clones folder structure with default theme   
