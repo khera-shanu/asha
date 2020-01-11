@@ -2,7 +2,7 @@
 
 ### Folder structure
 
-`
+```
 My Awesome Site
 |
 |________ config.json
@@ -66,7 +66,7 @@ My Awesome Site
 |                             |____ ...
 |         
 |________ _sites
-`
+```
 ### command line tool:
  - `asha init` - clones folder structure with default theme   
  - `asha intall plugin/theme URL` - clones theme/plugin to theme/plugin folder and run tests.
