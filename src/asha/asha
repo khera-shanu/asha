@@ -4,23 +4,49 @@ import jinja2
 import markdown2
 import rangeen
 import htmlmin
-import os, sys, shutil
+import os, sys, shutil, stat
 import json
 
+class Utils:
+    @staticmethod
+    def copytree(src, dst, symlinks = False, ignore = None):
+        if not os.path.exists(dst):
+            os.makedirs(dst)
+            shutil.copystat(src, dst)
+        lst = os.listdir(src)
+        if ignore:
+            excl = ignore(src, lst)
+            lst = [x for x in lst if x not in excl]
+        for item in lst:
+            s = os.path.join(src, item)
+            d = os.path.join(dst, item)
+            if symlinks and os.path.islink(s):
+                if os.path.lexists(d):
+                    os.remove(d)
+                os.symlink(os.readlink(s), d)
+                try:
+                    st = os.lstat(s)
+                    mode = stat.S_IMODE(st.st_mode)
+                    os.lchmod(d, mode)
+                except:
+                    pass # lchmod not available
+            elif os.path.isdir(s):
+                Utils.copytree(s, d, symlinks, ignore)
+            else:
+                shutil.copy2(s, d)
 
 class Asha:
-
     @staticmethod
     def _check_setup(dir_name, files):
-        for item in (".asha", "config.json", "posts", "pages", "themes"):
+        for item in ["asha"]:
             if item in files: files.remove(item)
         return dir_name, files
 
     @staticmethod
     def _setup():
-        cwd = os.path.join(os.getcwd(), "site")
+        cwd = os.getcwd()
         dir_path = os.path.dirname(__file__)
-        shutil.copytree(dir_path, cwd, ignore=Asha._check_setup) 
+        Utils.copytree(dir_path, cwd, ignore=Asha._check_setup) 
 
     def __init__(self):
         with open("./config.json") as fp:
