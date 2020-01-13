@@ -38,7 +38,7 @@ class Utils:
 class Asha:
     @staticmethod
     def _check_setup(dir_name, files):
-        for item in ["asha"]:
+        for item in ["asha", ".gitignore"]:
             if item in files: files.remove(item)
         return dir_name, files
 
@@ -58,7 +58,8 @@ class Asha:
                   }
         self.minimal_rt = {
                     "pages":[],
-                    "posts":[]
+                    "posts":[],
+                    **global_config
                   }
 
     def _build(self):
@@ -80,10 +81,12 @@ class Asha:
     def _minimal_rt_from_rt(self):
         for k,v in self.rt.items():
             for item in v:
-                self.minimal_rt[k].append({
-                                            "url":self._create_final_path(k, item["file_path"]),
-                                            "metadata":item["html"].metadata
-                                         })
+                d_ = {"url":self._create_final_path(k, item["file_path"])}
+                d_.update(item["html"].metadata)
+                self.minimal_rt[k].append(d_)
+        self.minimal_rt["pages"].sort(key=lambda x:x['sort_order'])
+        with open(os.path.join("themes", self.theme, "./config.json")) as fp:
+            self.minimal_rt.update(json.loads(fp.read()))
 
     def _buiild_from_rt(self):
         for k,v in self.rt.items():
@@ -112,12 +115,16 @@ class Asha:
         self._clean(path)
         self._build_folders(path)
 
-    def _append_to_resource_table(self, item_type, file_path):
-        html = markdown2.markdown_path(file_path, extras=["metadata"])
+    def _page_post_config(self, file_path):
         theme_config_path = os.path.splitext(os.path.join("themes", self.theme, file_path))[0] +".json"
         if os.path.exists(theme_config_path):
             with open(theme_config_path) as fp:
-                html.metadata.update(json.loads(fp.read()))
+                return json.loads(fp.read())
+        return {}
+
+    def _append_to_resource_table(self, item_type, file_path):
+        html = markdown2.markdown_path(file_path, extras=["metadata"])
+        html.metadata.update(self._page_post_config(file_path))
         self.rt[item_type].append({"file_path":file_path, "html":html})
 
     def _build_from_path(self, item_type, item_details):
@@ -136,6 +143,7 @@ class Asha:
             else:
                 template_name = "page.jinja"
             jinja_file_path = os.path.join("themes", self.theme, template_name)
+            #pp_config = self._page_post_config(file_path)
             html = self._jinja_render_from_path(jinja_file_path, jinja_vars)
             self._create_html_file(item_type, file_path, html)
     

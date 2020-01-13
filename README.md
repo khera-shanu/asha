@@ -5,6 +5,9 @@
 ### Status
 
 - serve command - `to do`
+- create command - `to do`
+- update command - `to do`
+- install command - `to do`
 - unit tests - `to do`
 - Travis CI - `to do`
 - logo and branding - `to do`
@@ -23,7 +26,8 @@
 - HTML minification - `done`
 - pip - `done`
 
-- install command - `to do later`
 - theme/plugin manager - `to do later`
 - post/page manager - `to do later`
 - python2.7 support - `to do later`
+
+- Bug in markdown2/pygments - code highlighting not working
