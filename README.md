@@ -4,22 +4,26 @@
 
 ### Status
 
-- Logo and branding - `to do`
+- serve command - `to do`
+- unit tests - `to do`
+- Travis CI - `to do`
+- logo and branding - `to do`
 - github.io page - `to do`
 - documentation, collaboration and donation - `to do`
-- Travis CI - `to do`
-- default Theme - `to do`
-- unit tests - `to do`
-- build command - `to do`
-- serve command - `to do`
-- clean command - `to do`
-- pip - `to do`
+- sitemap generator - `to do`
+- RSS feed generator - `to do`
+- SEO score generator - `to do`
+- SSL inbuilt - `to do`
+
 - folder structure - `done`
-- POC build command - `done`
 - init command - `done`
+- build command - `done`
+- clean command - `done`
+- default Theme - `done`
+- HTML minification - `done`
+- pip - `done`
+
 - install command - `to do later`
 - theme/plugin manager - `to do later`
 - post/page manager - `to do later`
-- performance/SEO/Security integration - `to do later`
 - python2.7 support - `to do later`
-

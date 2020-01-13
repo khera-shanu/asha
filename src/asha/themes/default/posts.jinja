@@ -1,6 +1,11 @@
-{% extends %}
+{% extends "main.jinja" %}
+{% block extra_head %}
+  <title>{{title}}</title>
+{% endblock %}
 {% block content %}
-  {% for post in posts %}
-    {{ post_meta_content }}
+<main class="container">
+  {% for post in g.posts %}
+    <h1> title {{ post.metadata.title }} </h1>
   {% endfor %}
+</main>
 {% endblock %}

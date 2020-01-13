@@ -1,3 +1,8 @@
+---
+name: Home
+title: index page title
+---
+
 # hello world
 
 ## this is awesome

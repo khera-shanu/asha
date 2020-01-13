@@ -52,28 +52,92 @@ class Asha:
         with open("./config.json") as fp:
             global_config = json.loads(fp.read())
         self.theme = global_config.get("theme")
+        self.rt = {
+                    "pages":[],
+                    "posts":[]
+                  }
+        self.minimal_rt = {
+                    "pages":[],
+                    "posts":[]
+                  }
 
     def _build(self):
-        for path in ("posts", ):
-            for root, dirs, files in os.walk(path):
+        for item_type in ("posts", "pages"):
+            for root, dirs, files in os.walk(item_type):
                 for name in files:
-                    self._build_from_path(os.path.join(root, name))
+                    self._append_to_resource_table(item_type, os.path.join(root, name))
+        self._minimal_rt_from_rt()
+        self._clean_and_build_static_site_folders()
+        self._buiild_from_rt()
+    
+    def _create_final_path(self, item_type, file_path):
+        if item_type == "posts":
+            file_path = os.path.splitext(file_path)[0] +".html"
+        else:
+            file_path = os.path.splitext(os.path.split(file_path)[-1])[0] + ".html"
+        return file_path
 
-    def _build_from_path(self, file_path):
+    def _minimal_rt_from_rt(self):
+        for k,v in self.rt.items():
+            for item in v:
+                self.minimal_rt[k].append({
+                                            "url":self._create_final_path(k, item["file_path"]),
+                                            "metadata":item["html"].metadata
+                                         })
+
+    def _buiild_from_rt(self):
+        for k,v in self.rt.items():
+            for item in v:
+                self._build_from_path(k, item)
+
+    def _clean(self, path):
+        if os.path.exists(path): shutil.rmtree(path)
+
+    def _create_folders_if_needed(self, path, folders):
+        for folder in folders:
+            path = os.path.join(path, folder)
+            if not os.path.exists(path): os.mkdir(path)
+
+    def _build_folders(self, path):
+        os.mkdir(path)
+        static_path = os.path.join(path, "static")
+        os.mkdir(static_path)
+        Utils.copytree(os.path.join("themes", self.theme, "static"), static_path) 
+        for item in self.rt["posts"]:
+            file_path = item.get("file_path")
+            self._create_folders_if_needed(path, file_path.split("/")[:-1])
+
+    def _clean_and_build_static_site_folders(self):
+        path = "_static_site"
+        self._clean(path)
+        self._build_folders(path)
+
+    def _append_to_resource_table(self, item_type, file_path):
         html = markdown2.markdown_path(file_path, extras=["metadata"])
+        theme_config_path = os.path.splitext(os.path.join("themes", self.theme, file_path))[0] +".json"
+        if os.path.exists(theme_config_path):
+            with open(theme_config_path) as fp:
+                html.metadata.update(json.loads(fp.read()))
+        self.rt[item_type].append({"file_path":file_path, "html":html})
+
+    def _build_from_path(self, item_type, item_details):
+        file_path = item_details.get("file_path")
+        html = item_details.get("html")
         jinja_vars = html.metadata
         jinja_vars["html_content"] = html
-        theme_config_path = os.path.splitext(os.path.join("themes", self.theme, file_path))[0] +".json"
-        if not os.path.exists(theme_config_path): pass #do something ?
-        with open(theme_config_path) as fp:
-            jinja_vars.update(json.loads(fp.read()))
-        return self._jinja_render(file_path, jinja_vars)
+        jinja_vars["g"] = self.minimal_rt
+        return self._jinja_render(item_type, file_path, jinja_vars)
 
-    def _jinja_render(self, file_path, jinja_vars):
-        if file_path.split("/")[0] == "posts":
-            jinja_file_path = os.path.join("themes", self.theme, "post.jinja")
+    def _jinja_render(self, item_type, file_path, jinja_vars):
+            if item_type == "posts":
+                template_name = "post.jinja"
+            elif jinja_vars.get("list", "false") == "true":
+                template_name = jinja_vars["template"]
+            else:
+                template_name = "page.jinja"
+            jinja_file_path = os.path.join("themes", self.theme, template_name)
             html = self._jinja_render_from_path(jinja_file_path, jinja_vars)
-            self._create_html_file(file_path, html)
+            self._create_html_file(item_type, file_path, html)
     
     def _jinja_render_from_path(self, jinja_file_path, jinja_vars):
         template_dir, template_file = os.path.split(jinja_file_path)
@@ -85,16 +149,9 @@ class Asha:
         html = template.render(**jinja_vars)
         return htmlmin.minify(html, remove_empty_space=True)
 
-    def _create_html_file(self, file_path, html):
-        if not os.path.exists("_static_site"):
-            path = "_static_site"
-            os.mkdir(path)
-            for p in file_path.split("/")[:-1]:
-                path = os.path.join(path, p)
-                os.mkdir(path)
-        if file_path.split("/")[0] == "posts":
-            file_path = os.path.splitext(os.path.join("_static_site", file_path))[0] +".html"
-            with open(file_path, "w+") as fp: fp.write(html)
+    def _create_html_file(self, item_type, file_path, html):
+        file_path = os.path.join("_static_site", self._create_final_path(item_type, file_path))
+        with open(file_path, "w+") as fp: fp.write(html)
 
 if __name__ == '__main__':
     usage = rangeen.colorify(f'''
@@ -120,5 +177,3 @@ asha serve - serves the static site
             asha._build()
         else:
             pass #implement later
-    #asha = Asha()
-    #asha._build()
