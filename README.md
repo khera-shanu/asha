@@ -6,14 +6,16 @@
 `pip install asha`
 
 `asha init`
+
 `asha build`
 
 `cd _static_site`
+
 `python3 -m http.server`
 
-### Edit `.md` files in pages/posts for blog content
+#### Edit `.md` files in pages/posts for blog content
 
-### Edit `.json` files for theme related and sitewide changes
+#### Edit `.json` files for theme related and sitewide changes
 
 ### Status
 
@@ -31,6 +33,7 @@
 - SEO score generator - `to do`
 - SSL inbuilt - `to do`
 
+
 - folder structure - `done`
 - init command - `done`
 - build command - `done`
@@ -39,8 +42,10 @@
 - HTML minification - `done`
 - pip - `done`
 
+
 - theme/plugin manager - `to do later`
 - post/page manager - `to do later`
 - python2.7 support - `to do later`
+
 
 - Bug in markdown2/pygments - code highlighting not working
