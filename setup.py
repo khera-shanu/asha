@@ -29,7 +29,7 @@ classifiers = [
 
 setup(
     name="asha",
-    version="0.0.1",
+    version="0.0.3",
     maintainer="Shanu Khera",
     maintainer_email="kherashanu@gmail.com",
     author="Shanu Khera",
@@ -37,9 +37,9 @@ setup(
     url="https://github.com/khera-shanu/asha",
     license="MIT",
     platforms=["any"],
-    packages=find_packages("src/asha"),
-    package_dir={"": "src/asha"},
     include_package_data=True,
+    packages=find_packages("src"),
+    package_dir={"": "src"},
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         "rangeen>=0.0.1",
@@ -47,7 +47,7 @@ setup(
         "markdown2>=2.3.8",
         "htmlmin>=0.1.12",
     ],
-    scripts=["src/asha/asha"],
+    entry_points={"console_scripts": ["asha = asha:main"]},
     description="An unicode and ascii colour, emotes, art and loader library for terminals.",
     classifiers=classifiers,
     long_description="""A static site generator for lazy developers."""

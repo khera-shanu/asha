@@ -38,7 +38,7 @@ class Utils:
 class Asha:
     @staticmethod
     def _check_setup(dir_name, files):
-        for item in ["asha", ".gitignore"]:
+        for item in ["asha", ".gitignore", "asha.egg-info", "__pycache__", "__init__.py"]:
             if item in files: files.remove(item)
         return dir_name, files
 
@@ -161,7 +161,7 @@ class Asha:
         file_path = os.path.join("_static_site", self._create_final_path(item_type, file_path))
         with open(file_path, "w+") as fp: fp.write(html)
 
-if __name__ == '__main__':
+def main():
     usage = rangeen.colorify(f'''
 Usage:
 -----
@@ -185,3 +185,6 @@ asha serve - serves the static site
             asha._build()
         else:
             pass #implement later
+
+if __name__ == '__main__':
+    main()

@@ -2,6 +2,19 @@
 
 ## Asha - A super simple static site generator using rangeen, markdown2 and jinja2.
 
+### Usage
+`pip install asha`
+
+`asha init`
+`asha build`
+
+`cd _static_site`
+`python3 -m http.server`
+
+### Edit `.md` files in pages/posts for blog content
+
+### Edit `.json` files for theme related and sitewide changes
+
 ### Status
 
 - serve command - `to do`
