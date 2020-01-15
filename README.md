@@ -1,6 +1,6 @@
 ![Asha logo](https://github.com/khera-shanu/asha/raw/master/src/asha/themes/default/static/images/logo.jpeg "Asha")
 
-## Asha - A super simple static site generator using rangeen, markdown2 and jinja2.
+## Asha - A super simple static site generator using rangeen, markdown2 and jinja2. (tested on python3.6+ only)
 
 ### Usage
 `pip install asha`
