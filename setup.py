@@ -29,7 +29,7 @@ classifiers = [
 
 setup(
     name="asha",
-    version="0.0.3",
+    version="0.0.4",
     maintainer="Shanu Khera",
     maintainer_email="kherashanu@gmail.com",
     author="Shanu Khera",

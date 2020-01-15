@@ -21,9 +21,9 @@ this is a link.
 
 this here is an Image.
 
-'''
+```
 this is a code block
-'''
+```
 
 ```python
 #this is a syntax highlighted code block
